@@ -1,3 +1,17 @@
+// Copyright 2022 Criticality Score Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package retry
 
 import (
@@ -11,9 +25,7 @@ const (
 	DefaultInitialDuration = 2 * time.Minute
 )
 
-var (
-	ErrorNoMoreAttempts = errors.New("request cannot by retried")
-)
+var ErrorNoMoreAttempts = errors.New("request cannot by retried")
 
 type RetryStrategy int
 
@@ -70,12 +82,12 @@ func DefaultBackoff(d time.Duration) time.Duration {
 }
 
 type Options struct {
-	maxRetries         int
-	initialDelay       time.Duration
 	backoff            BackoffFn
 	sleep              sleepFn
 	retryAfter         RetryAfterFn
 	retryStrategyFuncs []RetryStrategyFn
+	maxRetries         int
+	initialDelay       time.Duration
 }
 type Option interface {
 	Apply(*Options)
@@ -155,7 +167,7 @@ func NewRequest(r *http.Request, client func(*http.Request) (*http.Response, err
 //  2. Do returns an error
 //  3. The number of attempts exceeds MaxRetries
 //  4. No RetryStrategy was returned or only NoRetry, and RetryAfter() had no
-//  delay.
+//     delay.
 //
 // If Done returns true, Do must never be called again, otherwise Do will
 // return ErrorNoMoreAttempts.

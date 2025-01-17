@@ -1,3 +1,17 @@
+// Copyright 2022 Criticality Score Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package main
 
 import "container/heap"
@@ -16,23 +30,23 @@ type RowItem struct {
 // "container/heap" documentation.
 type PriorityQueue []*RowItem
 
-// Len implements the heap.Interface interface
+// Len implements the heap.Interface interface.
 func (pq PriorityQueue) Len() int { return len(pq) }
 
-// Less implements the heap.Interface interface
+// Less implements the heap.Interface interface.
 func (pq PriorityQueue) Less(i, j int) bool {
 	// We want Pop to give us the highest, not lowest, priority so we use greater than here.
 	return pq[i].score > pq[j].score
 }
 
-// Swap implements the heap.Interface interface
+// Swap implements the heap.Interface interface.
 func (pq PriorityQueue) Swap(i, j int) {
 	pq[i], pq[j] = pq[j], pq[i]
 	pq[i].index = i
 	pq[j].index = j
 }
 
-// Push implements the heap.Interface interface
+// Push implements the heap.Interface interface.
 func (pq *PriorityQueue) Push(x any) {
 	n := len(*pq)
 	item := x.(*RowItem)
@@ -40,7 +54,7 @@ func (pq *PriorityQueue) Push(x any) {
 	*pq = append(*pq, item)
 }
 
-// Pop implements the heap.Interface interface
+// Pop implements the heap.Interface interface.
 func (pq *PriorityQueue) Pop() any {
 	old := *pq
 	n := len(old)
